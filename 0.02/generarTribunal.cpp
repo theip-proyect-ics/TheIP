@@ -46,5 +46,6 @@ generarTribunal(TFG, slot, profesores, tribunal, nprof, doctor){
 		}
 		else return trib; //si no ha fallado, devuelve el resultado
 	}
+	printf("Error en el backtracking de tribunal.\n");
 	return NULL; //Si ha pasado por todos los profesores, el algoritmo ha fallado y devuelve NULL
 }
