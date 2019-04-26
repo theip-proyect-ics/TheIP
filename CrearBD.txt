@@ -1,0 +1,70 @@
+DROP TABLE Grado;
+DROP TABLE Profesor;
+DROP TABLE Disponibilidad;
+DROP TABLE Alumno;
+DROP TABLE TFG;
+DROP TABLE GradoProfesor;
+DROP TABLE Presentacion;
+
+CREATE TABLE Grado (
+Nombre text Primary key
+);
+
+CREATE TABLE Presentacion (
+ID int Primary key,
+Dia int not null,
+Slot int not null,
+Aula int not null,
+Convocatoria int not null,
+Prof1 text not null,
+Prof2 text not null,
+Prof3 text,
+FOREIGN KEY (Prof1) REFERENCES Profesor(Correo) ON UPDATE CASCADE ON DELETE SET NULL,
+FOREIGN KEY (Prof2) REFERENCES Profesor(Correo) ON UPDATE CASCADE ON DELETE SET NULL,
+FOREIGN KEY (Prof3) REFERENCES Profesor(Correo) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE Disponibilidad (
+Dia int not null,
+Slot int not null,
+Flag bool not null,
+Primary key(Dia, Slot)
+);
+
+CREATE TABLE Profesor (
+Correo text Primary key,
+Doctorado bool not null,
+Nombre text not null,
+Apellido1 text not null,
+Apellido2 text,
+TFGsMax int not null,
+TFGsRealizados int not null,
+Jurado int,
+FOREIGN KEY (Jurado) REFERENCES Presentacion(ID) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE GradoProfesor (
+Profesor text,
+Grado text,
+PRIMARY KEY(Profesor, Grado),
+FOREIGN KEY (Profesor) REFERENCES Profesor(Correo) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY (Grado) REFERENCES Grado(Nombre) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE TFG (
+ID int Primary key,
+Tutor text not null,
+Presentacion int not null,
+FOREIGN KEY (Tutor) REFERENCES Profesor(Correo) ON UPDATE CASCADE ON DELETE SET NULL,
+FOREIGN KEY (Presentacion) REFERENCES Presentacion(ID) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE Alumno (
+Correo text Primary key,
+Nombre text not null, 
+Apellido1 text not null,
+Apellido2 text,
+Grado text not null,
+TFG int not null,
+FOREIGN KEY (TFG) REFERENCES TFG(ID) ON UPDATE CASCADE ON DELETE SET NULL
+);
