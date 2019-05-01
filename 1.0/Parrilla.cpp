@@ -2,48 +2,72 @@
 #include "Parrilla.h"
 
 /*
-Esta función realiza el backtracking para los slots y las aulas, generando la parrilla final
+Esta funciÃ³n realiza el backtracking para los slots y las aulas, generando la parrilla final
 
--slots: Cantidad de slots a generar (3 slots en 5 días = 25 slots)
--aulas: número de aulas por asignar a cada slot
--nTFGs: número total de TFGs por asignar
+-slots: Cantidad de slots a generar (3 slots en 5 dÃ­as = 25 slots)
+-aulas: nÃºmero de aulas por asignar a cada slot
+-nTFGs: nÃºmero total de TFGs por asignar
 -listTFG: lista de TFGs
 -profesores: lista de profesores
--numProfesores: El número de profesores en la BBDD
+-numProfesores: El nÃºmero de profesores en la BBDD
 */
 
-Parrilla generarParrilla(int slots, int aulas, int nTFGs, TFG *listTFG, Profesor *profesores, int numProfesores) {
+Parrilla::Parrilla() {
 
-	int auxTFGs = 0; // cantidad de TFGs asignados
-	bool exito = false;
+	convocatoria = 0;
+	nslots = 0;
+	naulas = 0;
+	nTFGs = 0;
+	nProf = 0;
+	exito = false;
+
+}
+
+Parrilla::Parrilla(int convocatoria, int nslots, int naulas, int nTFGs, int nProf) {
+
+	this->convocatoria = convocatoria;
+	this->nslots = nslots;
+	this->naulas = naulas;
+	this->nTFGs = nTFGs;
+	this->nProf = nProf;
+	exito = false;
+
+	presentaciones = (Presentacion**)malloc(nTFGs * sizeof(Presentacion*));
+
+}
+
+Parrilla::~Parrilla() {
+	free(presentaciones);
+}
+
+
+void Parrilla::generarParrilla(TFG *listTFG, Profesor *profesores) {
+
+	exito = false;
 	int i;
 
-	int* bitAulas = (int*)malloc(slots * sizeof(int));
-	for (i = 0; i < slots; i++) bitAulas[i] = 0;
+	bitAulas = (int*)malloc(nslots * sizeof(int));
+	for (i = 0; i < nslots; i++) bitAulas[i] = 0;
 
-	short** bitProf = (short**)malloc(numProfesores * sizeof(short*));
+	bitProf = (short**)malloc(nProf * sizeof(short*));
 
-	for (i = 0; i < numProfesores; i++) {
-		bitProf[i] = (short*)malloc(numProfesores * sizeof(short));
+	for (i = 0; i < nProf; i++) {
+		bitProf[i] = (short*)malloc(nProf * sizeof(short));
 
-		for (int j = 0; j < slots; j++) bitProf[i][j] = 0; // Si el bit está a 0, no está asignado. Cuando un TFG se asigne, se pondrá a 1
+		for (int j = 0; j < nslots; j++) bitProf[i][j] = 0; // Si el bit estÃ¡ a 0, no estÃ¡ asignado. Cuando un TFG se asigne, se pondrÃ¡ a 1
 	}
 
-	Parrilla parrilla; // Llamar al constructor cuando se cree en la BBDD
+	generarPresentacion(listTFG, 0, profesores); 
 
-	generarPresentacion(slots, aulas, listTFG, nTFGs, 0, profesores, numProfesores, &parrilla, bitAulas, bitProf, &exito); 
-
-	if (!exito) cout << "Parrilla creada con éxito" << endl;
-	else cout << "Lo sentimos, no existe ninguna combinación posible" << endl;
-		
-	return parrilla;
+	if (!exito) cout << "Parrilla creada con Ã©xito" << endl;
+	else cout << "Lo sentimos, no existe ninguna combinaciÃ³n posible" << endl;
 }
 
 /*
-Esta función realiza el backtracking para los TFGs
+Esta funciÃ³n realiza el backtracking para los TFGs
 
 -slot: el slot para el TFG
--aulas: número de aulas por asignar a este slot
+-aulas: nÃºmero de aulas por asignar a este slot
 -naula: numero de aulas con TFG asignado a este slot
 -listTFG: lista de TFGs
 -profesores: lista de profesores
@@ -51,53 +75,56 @@ Esta función realiza el backtracking para los TFGs
 -bitmap: bitmap de TFGs asignados
 */
 
-void generarPresentacion(int slots, int aulas, TFG *listTFG, int nTFGs, int TFG, Profesor *profesores, int numProf, Parrilla *parrilla, int *bitAulas, short **bitProf, bool *exito) {
+void Parrilla::generarPresentacion(TFG *listTFG, int TFG, Profesor *profesores) {
 
 	if (nTFGs == TFG) {
-		*exito = true;
+		exito = true;
 		return;
 	}
 
-	for (int slot = 0; slot < slots; slot++) {
+	for (int slot = 0; slot < nslots; slot++) {
 
-		if (bitAulas[slot] == aulas) continue;
+		if (bitAulas[slot] == naulas) continue;
 
 		int* jurado = (int*)malloc(4 * sizeof(int));
 		for (int i = 1; i < 4; i++) jurado[i] = -1;
-		jurado[0] = 0;				// jurado[0] te indica cuántos profesores lleva
+		jurado[0] = 0;				// jurado[0] te indica cuÃ¡ntos profesores lleva
 
-		generarTribunal(slots, slot, aulas, listTFG, nTFGs, TFG, profesores, numProf, parrilla, bitAulas, bitProf, exito, jurado); //generamos un tribunal para la presentación
+		generarTribunal(slot, listTFG, TFG, profesores, jurado); //generamos un tribunal para la presentaciÃ³n
 
 		if (exito) return;
 		else free(jurado);
 		//listTFG[TFG].eliminarPresentacion();
 	}
 
-	generarPresentacion(slots, aulas, listTFG, nTFGs, TFG, profesores, numProf, parrilla, bitAulas, bitProf, exito);
+	generarPresentacion(listTFG, TFG, profesores);
 	return;
 }
 
 
-void generarTribunal(int slots, int slot, int aulas, TFG *listTFG, int nTFGs, int TFG, Profesor *profesores, int numProf, Parrilla *parrilla, int *bitAulas, short **bitProf, bool *exito, int *jurado) {
+void Parrilla::generarTribunal(int slot, TFG *listTFG, int TFG, Profesor *profesores, int *jurado) {
 
 	if (jurado[0] == 3) {
 
-		listTFG[TFG].crearPresentacion(slot / SLOTS, bitAulas[slot], slot, 0);		// Crea la presentación, el 0 es de Convocatoria
+		listTFG[TFG].crearPresentacion(slot / SLOTS, bitAulas[slot], slot, 0);		// Crea la presentaciÃ³n, el 0 es de Convocatoria
 		Presentacion *aux = &listTFG[TFG].getPresentacion();
 
 		for (int i = 0; i < jurado[0]; i++) aux->addJurado(profesores[jurado[i + 1]]);
 
 		bitAulas[slot]++;
 
-		//parrilla->presentaciones[TFG] = *aux;		GUARDAR EN PARRILLA CUANDO ESTÉ CREADA LA CLASE
+		presentaciones[TFG] = aux;		// Guardar la presentaciÃ³n en la parrilla
 
-		// Mirar si el tutor puede;
-		generarPresentacion(slots, aulas, listTFG, nTFGs, TFG + 1, profesores, numProf, parrilla, bitAulas, bitProf, exito);
+		// Mirar aquÃ­ si el tutor puede;
+
+		generarPresentacion(listTFG, TFG + 1, profesores);
 
 		if (!exito) {
 
 			listTFG[TFG].eliminarPresentacion();
-			// parrilla->presentaciones[TFG];	ELIMINAR LA PRESENTACIÓN DE LA PARRILLA CUANDO ESTÉ CREADA LA CLASE
+			
+			presentaciones[TFG] = NULL;
+
 			bitAulas[slot]--;
 
 		}
@@ -107,7 +134,7 @@ void generarTribunal(int slots, int slot, int aulas, TFG *listTFG, int nTFGs, in
 	int profesor = 0;
 	if (jurado[0] > 1) profesor = jurado[jurado[0]] + 1;	// Elimina variaciones por orden
 
-	for (profesor; profesor < numProf; profesor++) {
+	for (profesor; profesor < nProf; profesor++) {
 
 		int* grados = profesores[profesor].getGrados(); // Recibir los grados del profesor;
 		bool aux = false;
@@ -129,7 +156,7 @@ void generarTribunal(int slots, int slot, int aulas, TFG *listTFG, int nTFGs, in
 		jurado[jurado[0]] = profesor;
 		bitProf[profesor][slot] = 1;
 
-		generarTribunal(slots, slot, aulas, listTFG, nTFGs, TFG, profesores, numProf, parrilla, bitAulas, bitProf, exito, jurado); //generamos un tribunal para la presentación
+		generarTribunal(slot, listTFG, TFG, profesores, jurado); //generamos un tribunal para la presentaciÃ³n
 
 		if (exito) return;
 		else {
