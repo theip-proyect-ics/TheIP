@@ -1,4 +1,3 @@
-
 #include "Profesor.h"
 //#include "Usuario.h"
 
@@ -48,8 +47,8 @@ int Profesor::getNGrados()
 
 void Profesor::anadirGrado(int id)
 {
-	int* auxGr = (int**)malloc((nGrados+1) * sizeof(int*)); //reservamos memoria para tener un grado m·s
-	int* auxTFG = (int**)malloc((nGrados + 1) * sizeof(int*)); //y tambien para atualizar el numero de TFGs
+	int* auxGr = (int*)malloc((nGrados+1) * sizeof(int)); //reservamos memoria para tener un grado m√°s
+	int* auxTFG = (int*)malloc((nGrados + 1) * sizeof(int)); //y tambien para atualizar el numero de TFGs
 	for (int i = 0; i < nGrados; i++) { 
 		auxGr[i] = grados[i]; //copiamos los grados a la nueva variable
 		auxTFG[i] = numTFGs[i]; //y tambien el numero de TFGs
@@ -65,8 +64,8 @@ void Profesor::anadirGrado(int id)
 
 void Profesor::quitarGrado(int id)
 {
-	int* auxGr = (int**)malloc((nGrados - 1) * sizeof(int*));  //reservamos memoria para tener un grado m·s
-	int *auxTFG = (int**)malloc((nGrados - 1) * sizeof(int*));  //y tambien para atualizar el numero de TFGs
+	int* auxGr = (int*)malloc((nGrados - 1) * sizeof(int));  //reservamos memoria para tener un grado m√°s
+	int *auxTFG = (int*)malloc((nGrados - 1) * sizeof(int));  //y tambien para atualizar el numero de TFGs
 	for (int i = 0; i < nGrados; i++) {
 		if (grados[i] != i){
 			auxGr[i] = grados[i];  //copiamos los grados que no se borran a la nueva variable
@@ -80,7 +79,7 @@ void Profesor::quitarGrado(int id)
 	nGrados--;  //menosmenos
 	return;
 }
-//porque est· esta funciÛn aqui si la relaciÛn con la clase PresentaciÛn es diferente (ver diagrama de clases)
+//porque est√° esta funci√≥n aqui si la relaci√≥n con la clase Presentaci√≥n es diferente (ver diagrama de clases)
 /*
 Presentacion Profesor::getPresentaciones()
 {
@@ -104,6 +103,7 @@ int* Profesor::getNumTFGs()
 
 void Profesor::setNumTFGs(int* numTFGs)
 {
-	numTFGs = this->numTFGs;
+	this->numTFGs = numTFGs;
 }
+
 
