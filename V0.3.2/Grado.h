@@ -18,7 +18,8 @@ class Grado {
     
 public:
 	static int nGrados;
-
+	
+    Grado();
     Grado(string);
     ~Grado();
     
@@ -34,5 +35,3 @@ public:
 	void setNombre(string);
 	int getId();
 };
-
-int Grado::nGrados = 0;
