@@ -6,6 +6,13 @@
 //
 
 #include "Grado.h"
+int Grado::nGrados = 0;
+
+Grado::Grado() {
+	id = nGrados;
+	nGrados++;
+}
+
 
 Grado::Grado(string nombre) {
 	
