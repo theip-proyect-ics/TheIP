@@ -3,7 +3,7 @@
 //  
 //
 //  Created by Rafa Del pozo on 02/04/2019.
-// Actualizado por ¡lvaro Puente Lineas actualizadas: 6
+// Actualizado por √Ålvaro Puente Lineas actualizadas: 6
 //
 #include "TFG.h"
 
@@ -73,7 +73,7 @@ Profesor *TFG::getTutor() {
 
 int TFG::getGrado()
 {
-	return grado.getID();
+	return grado.getId();
 }
 
 //getes y setes
