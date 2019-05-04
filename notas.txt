@@ -1,0 +1,19 @@
+To do list
+- Ventanas de 
+	.modificar
+		_alumnos (de aqui tampoco)
+		_profesores (de aqui no he empezado)
+	.generar (esta medio hecho) Revision
+	.importar (falta la parte de seleccion de sql)
+-implementar codigo 
+	.importar bd
+	.generar parrilla
+	
+
+notas
+utilizad qt creator e importad .h y .cpp del resto
+ya que me he dado cuenta que en visual es bastante mas jodido hacer los slots
+
+no conecteis las pantalla con los botones eso ya me peleo yo que ya se el lunes os explico
+
+hacedlo lo mas basico posible demomento y las implementaciones os digo el lunes como hacerlas
