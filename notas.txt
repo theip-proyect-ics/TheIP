@@ -1,8 +1,5 @@
 To do list
 - Ventanas de 
-	.modificar
-		_alumnos (de aqui tampoco)
-		_profesores (de aqui no he empezado)
 	.generar (esta medio hecho) Revision
 	.importar (falta la parte de seleccion de sql)
 -implementar codigo 
