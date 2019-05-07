@@ -196,3 +196,4 @@ int Profesor::getMaxTFGs(int idGrado) {
 	}
 	printf("El profesor no está en este grado.\n");
 	return NULL;
+}
