@@ -4,9 +4,9 @@
 
 Profesor::Profesor(string nombre, string apellido, string email) : Usuario(nombre, apellido, email)
 {
-
 	nGrados = 0;
 	numTFGs = 0;
+	maxTFGs = NULL;
 }
 
 Profesor::~Profesor()
@@ -195,6 +195,4 @@ int Profesor::getMaxTFGs(int idGrado) {
 		}
 	}
 	printf("El profesor no está en este grado.\n");
-	return;
-}
-
+	return NULL;
