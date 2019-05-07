@@ -29,7 +29,7 @@ public:
     
 	bool getDisponibilidad(int dia, int slot);
 	
-	void setDisponibilidad(int dia, int slot);
+	void setDisponibilidad(int dia, int slot, int valor);
 
 
     
