@@ -10,19 +10,37 @@
 
 Presentacion::Presentacion() {
 
+    for(int i = 0; i < 4; i++){
+        jurado[i] = (Profesor*) malloc (sizeof(Profesor));
+        jurado[i] = NULL;
+    }
 }
 Presentacion::~Presentacion() {
 
+    free(jurado);
 }
 
-int Presentacion::addJurado(Profesor profesor) {
-	return 0;
+void Presentacion::addJurado(Profesor *profesor) {
+    for(int i = 0; i < 4; i++){
+        if(jurado[i] == NULL)
+            jurado[i] = profesor;
+    }
 }
-int Presentacion::quitarJurado(Profesor profesor) {
-	return 0;
+void Presentacion::quitarJurado(Profesor *profesor) {
+    for(int i = 0; i < 4; i++){
+        if(jurado[i]->getEmail() == profesor->getEmail() ){
+            jurado[i] = NULL;
+        }
+    }
 }
-string Presentacion::GetJurados(){
-	return 0;
+Profesor *Presentacion::GetJurado(int num){
+	
+    return jurado[num];
+}
+
+void Presentacion::eliminarJurado(){
+    for(int i = 0; i < 4; i++)
+        jurado[i] = NULL;
 }
 
 //getes y setes
