@@ -36,7 +36,7 @@ void Disponibilidad::setDisponibilidad(int dia, int slot, bool valor){
 
 }
 
-char **Disponibilidad::getTabla(){
+bool **Disponibilidad::getTabla(){
 
 	return tabla;
 }
