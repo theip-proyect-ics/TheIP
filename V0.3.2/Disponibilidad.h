@@ -33,7 +33,7 @@ public:
 
 
     
-    char **getTabla();
+    bool **getTabla();
     //por si quiere importar disponibilidad desde un csv -> feature solo si lo vemos viable hacer
     // void setTabla(string **tabla);
 };
