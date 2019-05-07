@@ -9,10 +9,10 @@
 
 Disponibilidad::Disponibilidad(){
     
-	 tabla = (char**)malloc(DIAS * sizeof(char*));
+	 tabla = (bool**)malloc(DIAS * sizeof(bool*));
 
 	 for (int i = 0; i < SLOTS; i++) {
-		 tabla[i] = (char *)malloc(SLOTS * sizeof(char));
+		 tabla[i] = (bool *)malloc(SLOTS * sizeof(bool));
 	 }
 }
 
@@ -30,7 +30,7 @@ bool Disponibilidad::getDisponibilidad(int dia, int slot){
 	return tabla[dia][slot];
 }
 
-void Disponibilidad::setDisponibilidad(int dia, int slot, int valor){
+void Disponibilidad::setDisponibilidad(int dia, int slot, bool valor){
 
 	tabla[dia][slot] = valor;
 
