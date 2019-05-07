@@ -45,37 +45,53 @@ int Profesor::getNGrados()
 	return nGrados;
 }
 
-void Profesor::anadirGrado(int id)
+void Profesor::anadirGrado(int id, int maxTFG)
 {
 	int* auxGr = (int*)malloc((nGrados+1) * sizeof(int)); //reservamos memoria para tener un grado más
 	int* auxTFG = (int*)malloc((nGrados + 1) * sizeof(int)); //y tambien para atualizar el numero de TFGs
+	int * auxMax = (int*)malloc((nGrados + 1) * sizeof(int));   //y para el maximo de TFGs por grado
 	for (int i = 0; i < nGrados; i++) { 
 		auxGr[i] = grados[i]; //copiamos los grados a la nueva variable
 		auxTFG[i] = numTFGs[i]; //y tambien el numero de TFGs
+		auxMax[i] = maxTFGs[i];  //y maximo de TFGs
 	}
 	auxGr[nGrados] = id; //metemos el nuevo grado, no deberia haber ningun TFG todavia
+	auxTFG[nGrados] = maxTFG;  //y asignamos el maximo de TFGs
 	free(grados);  //liberamos las variables anteriores
 	free(numTFGs); //  ^^^^^
+	free(maxTFGs);  //  ^^^^
 	grados = auxGr; //sustituimos
 	numTFGs = auxTFG; //^^^^ 
+	maxTFGs = auxMax;
 	nGrados++; //masmas
 	return;
 }
 
 void Profesor::quitarGrado(int id)
 {
-	int* auxGr = (int*)malloc((nGrados - 1) * sizeof(int));  //reservamos memoria para tener un grado más
+	if (nGrados == 0) {
+		fprintf("El profesor no está en ningún grado.\n");
+		return;
+	}
+
+	int *auxGr = (int*)malloc((nGrados - 1) * sizeof(int));  //reservamos memoria para tener un grado más
 	int *auxTFG = (int*)malloc((nGrados - 1) * sizeof(int));  //y tambien para atualizar el numero de TFGs
+	int *auxMax = (int*)malloc((nGrados - 1) * sizeof(int));   //y para el maximo de TFGs por grado
+	int j = 0;
 	for (int i = 0; i < nGrados; i++) {
-		if (grados[i] != i){
-			auxGr[i] = grados[i];  //copiamos los grados que no se borran a la nueva variable
-			auxTFG[i] = numTFGs[i];  //y tambien el numero de TFGs
+		if (grados[i] != id){
+			auxGr[j] = grados[i];  //copiamos los grados que no se borran a la nueva variable
+			auxTFG[j] = numTFGs[i];  //y tambien el numero de TFGs
+			auxMax[j] = maxTFGs[i];  //y maximo de TFGs
+			j++,
 		}
 	}
 	free(grados); //liberamos las variables anteriores
 	free(numTFGs);
+	free(maxTFGs);
 	grados = auxGr; //sustituimos
 	numTFGs = auxTFG;
+	maxTFGs = auxMax;
 	nGrados--;  //menosmenos
 	return;
 }
@@ -101,9 +117,86 @@ int* Profesor::getNumTFGs()
 	return numTFGs;
 }
 
+int Profesor::getNumTFGs(int idGrado) {
+	for (i = 0; i < nGrados; i++) {
+		if (idGrado == grados[i]) return numTFGs[i]; //Se busca el grado, se devuelve el numero de TFGs en ese grado
+	}
+	return -1; //Si el profesor no está en el grado, error
+}
+
 void Profesor::setNumTFGs(int* numTFGs)
 {
 	this->numTFGs = numTFGs;
 }
+
+
+void Profesor::setNumTFGs(int idGrado, int nTFGs) {
+	for (i = 0; i < nGrados; i++) {
+		if (idGrado == grados[i]) { //Buscamos el grado al que añadir un TFG
+			numTFGs[i] = nTFGs; //Si se encuentra uno, se actualiza el numero de TFGs
+			return;
+		}
+	}
+	fprintf("El profesor no está en este grado.\n");
+	return;
+}
+
+void Profesor::anadirNumTFG(int idGrado) {
+	for (i = 0; i < nGrados; i++) {
+		if (idGrado == grados[i]) { //Buscamos el grado al que añadir un TFG
+			numTFGs[i] ++; //Si se encuentra uno, se añade un TFG más al contador
+			return;
+		}
+	}
+	fprintf("El profesor no está en este grado.\n");
+	return;
+}
+
+void Profesor::quitarNumTFG(int idGrado) {
+	for (i = 0; i < nGrados; i++) {
+		if (idGrado == grados[i]) { //Buscamos el grado al que añadir un TFG
+			if (numTFGs[i] == 0)
+				fprintf("El profesor no tiene ningún TFG para este grado.\n");
+			else
+				numTFGs[i] --; //Si se encuentra uno, se quita un TFG del contador
+
+			return;
+		}
+	}
+	fprintf("El profesor no está en este grado.\n");
+	return;
+}
+
+
+void Profesor::setMaxTFGs(int* maxTFGs) {
+	this->maxTFGs = maxTFGs;
+}
+
+void Profesor::setMaxTFGs(int idGrado, int maxTFG) {
+	for (i = 0; i < nGrados; i++) {
+		if (idGrado == grados[i]) { //Buscamos el grado al que añadir un TFG
+			maxTFGs[i] = maxTFG; //Si se encuentra uno, se actualiza el maximo de TFGs
+			return;
+		}
+	}
+	fprintf("El profesor no está en este grado.\n");
+	return;
+}
+
+int* Profesor::getMaxTFGs() {
+	return maxTFGs:
+}
+
+
+int Profesor::getMaxTFGs(int idGrado) {
+	for (i = 0; i < nGrados; i++) {
+		if (idGrado == grados[i]) { //Buscamos el grado al que añadir un TFG
+			return maxTFGs[i]; //Si se encuentra, se devuelve el maximo de TFGs
+		}
+	}
+	fprintf("El profesor no está en este grado.\n");
+	return;
+}
+
 
 
