@@ -30,9 +30,9 @@ bool Disponibilidad::getDisponibilidad(int dia, int slot){
 	return tabla[dia][slot];
 }
 
-void Disponibilidad::setDisponibilidad(int dia, int slot){
+void Disponibilidad::setDisponibilidad(int dia, int slot, int valor){
 
-	tabla[dia][slot] = 1;
+	tabla[dia][slot] = valor;
 
 }
 
