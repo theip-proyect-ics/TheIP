@@ -11,14 +11,14 @@ Disponibilidad::Disponibilidad() {
 
 	tabla = (bool**)malloc(DIAS * sizeof(bool*));
 
-	for (int i = 0; i < SLOTS; i++) {
+	for (int i = 0; i < DIAS; i++) {
 		tabla[i] = (bool *)malloc(SLOTS * sizeof(bool));
 	}
 }
 
 Disponibilidad::~Disponibilidad() {
 
-	for (int i = 0; i < SLOTS; i++) {
+	for (int i = 0; i < DIAS; i++) {
 		free(tabla[i]);
 	}
 	free(tabla);
