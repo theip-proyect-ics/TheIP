@@ -7,8 +7,6 @@ Alumno::Alumno(string nombre, string apellido, string email, Grado grado) : Usua
 	cout << "Hola Datos:" << nombre << apellido << email;
 	cout << endl;
     this->grado = grado.getId();
-
-	//tfg = new TFG(this);
 }
 
 
