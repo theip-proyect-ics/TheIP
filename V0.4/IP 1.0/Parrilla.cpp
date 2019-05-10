@@ -19,6 +19,8 @@ Parrilla::Parrilla() {
 	naulas = 0;
 	nTFGs = 0;
 	nProf = 0;
+	valorAulas = 0;
+	valorDias = 0;
 	exito = false;
 
 }
@@ -30,9 +32,19 @@ Parrilla::Parrilla(int convocatoria, int nslots, int naulas, int nTFGs, int nPro
 	this->naulas = naulas;
 	this->nTFGs = nTFGs;
 	this->nProf = nProf;
+	valorAulas = 0;
+	valorDias = 0;
 	exito = false;
 
 	presentaciones = (Presentacion**)malloc(nTFGs * sizeof(Presentacion*));
+	presAulas = (Presentacion**)malloc(nTFGs * sizeof(Presentacion*));
+	presDias = (Presentacion**)malloc(nTFGs * sizeof(Presentacion*));
+
+	for (int i = 0; i < nTFGs; i++) {
+		presentaciones[i] = NULL;
+		presAulas[i] = NULL;
+		presDias[i] = NULL;
+	}
 
 }
 
@@ -59,7 +71,7 @@ void Parrilla::generarParrilla(TFG *listTFG, Profesor *profesores) {
 
 	generarPresentacion(listTFG, 0, profesores); 
 
-	if (!exito) cout << "Parrilla creada con éxito" << endl;
+	if (presDias[0] != NULL) cout << "Parrilla creada con éxito" << endl;
 	else cout << "Lo sentimos, no existe ninguna combinación posible" << endl;
 }
 
@@ -78,9 +90,11 @@ Esta función realiza el backtracking para los TFGs
 void Parrilla::generarPresentacion(TFG *listTFG, const int& TFG, Profesor *profesores) {
 
 	if (nTFGs == TFG) {
-		exito = true;
+		//exito = true;			// No buscar la mejor 
+		valorarParrilla();		// Buscar la mejor
 		return;
 	}
+
 
 	for (int slot = 0; slot < nslots; slot++) {
 
@@ -154,7 +168,9 @@ void Parrilla::generarTribunal(const int& slot, TFG *listTFG, const int& TFG, Pr
 
 		if (bitProf[profesor][slot]) continue;
 
-		if (profesores[profesor].getNumTFGs(gradTFG) <= 0) continue;
+		int numProfJur = profesores[profesor].getNumTFGs(gradTFG);
+
+		if (numProfJur <= 0) continue;
 
 		if (jurado[0] == 0 && !profesores[profesor].getDoctorado()) continue;
 
@@ -163,6 +179,7 @@ void Parrilla::generarTribunal(const int& slot, TFG *listTFG, const int& TFG, Pr
 		jurado[0]++;
 		jurado[jurado[0]] = profesor;
 		bitProf[profesor][slot] = 1;
+		profesores[profesor].setNumTFGs(gradTFG, numProfJur - 1);
 
 		generarTribunal(slot, listTFG, TFG, profesores, jurado); //generamos un tribunal para la presentación
 
@@ -172,6 +189,7 @@ void Parrilla::generarTribunal(const int& slot, TFG *listTFG, const int& TFG, Pr
 			jurado[jurado[0]] = -1;
 			jurado[0]--;
 			bitProf[profesor][slot] = 0;
+			profesores[profesor].setNumTFGs(gradTFG, numProfJur);
 		}
 	}
 
@@ -179,5 +197,46 @@ void Parrilla::generarTribunal(const int& slot, TFG *listTFG, const int& TFG, Pr
 }
 
 int Parrilla::valorarParrilla() {
-	return 0;
+	
+	int valor = 0;
+	int aulasUt = 0;
+	unsigned int diasExtra = 0;
+	unsigned int aulasExtra = 0;
+	unsigned int tutores = 0;
+
+	// Ahorrar Días
+
+	for (int i = nslots - 1; i >= 0; i--) {
+		if (bitAulas[i] > 0) break;
+
+		if (i % SLOTS == 0) diasExtra++;
+	}
+
+	for (int i = nslots - 1; i >= 0; i--)
+		if (aulasUt < bitAulas[i]) aulasUt = bitAulas[i];
+
+	aulasExtra = naulas - aulasUt;
+
+	for (int i = 0; i < nTFGs; i++)
+		if (presentaciones[i]->GetJurado(3) != NULL) tutores++;
+
+	valor = diasExtra * 8 + aulasExtra * 5 + tutores;
+
+	if (valor > valorDias) {
+		for (int i = 0; i < nTFGs; i++) {
+			presDias[i] = presentaciones[i];
+		}
+		valorDias = valor;
+	}
+
+	valor = diasExtra * 5 + aulasExtra * 8 + tutores;
+
+	if (valor > valorAulas) {
+		for (int i = 0; i < nTFGs; i++) {
+			presAulas[i] = presentaciones[i];
+		}
+		valorAulas = valor;
+	}
+
+
 }
