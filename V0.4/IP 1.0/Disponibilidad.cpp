@@ -13,6 +13,7 @@ Disponibilidad::Disponibilidad() {
 
 	for (int i = 0; i < DIAS; i++) {
 		tabla[i] = (bool *)malloc(SLOTS * sizeof(bool));
+		tabla[i] = 0;
 	}
 }
 
