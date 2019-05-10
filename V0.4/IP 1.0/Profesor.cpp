@@ -4,9 +4,11 @@
 
 Profesor::Profesor(string nombre, string apellido, string email) : Usuario(nombre, apellido, email)
 {
-	nGrados = NULL;
-	numTFGs = NULL;
+	nGrados = 0;
+	numTFGs = 0;
 	maxTFGs = NULL;
+	disponibilidad = Disponibilidad();
+	doctorado = false;
 }
 
 Profesor::~Profesor()
@@ -19,12 +21,12 @@ Profesor::~Profesor()
 
 void Profesor::crearDisponibilidad(int dia, int slot)
 {
-	tabla[dia][slot] = 1;
+	disponibilidad.setDisponibilidad(dia, slot, true);
 }
 
 void Profesor::eliminarDisponibilidad(int dia, int slot)
 {
-	tabla[dia][slot] = 0;
+	disponibilidad.setDisponibilidad(dia, slot, false);
 }
 /*void Profesor::modificarDisponibilidad(bool disponible, int dia, int slot)
 {
@@ -56,8 +58,7 @@ void Profesor::anadirGrado(int id, int maxTFG)
 		auxMax[i] = maxTFGs[i];  //y maximo de TFGs
 	}
 	auxGr[nGrados] = id; //metemos el nuevo grado, no deberia haber ningun TFG todavia
-	auxTFG[nGrados] = 0;  //y asignamos el maximo de TFGs
-	auxMax[nGrados] = maxTFG;
+	auxTFG[nGrados] = maxTFG;  //y asignamos el maximo de TFGs
 	free(grados);  //liberamos las variables anteriores
 	free(numTFGs); //  ^^^^^
 	free(maxTFGs);  //  ^^^^
@@ -78,10 +79,8 @@ void Profesor::quitarGrado(int id)
 	int *auxGr = (int*)malloc((nGrados - 1) * sizeof(int));  //reservamos memoria para tener un grado más
 	int *auxTFG = (int*)malloc((nGrados - 1) * sizeof(int));  //y tambien para atualizar el numero de TFGs
 	int *auxMax = (int*)malloc((nGrados - 1) * sizeof(int));   //y para el maximo de TFGs por grado
-
 	int j = 0;
-
-	for (int i = 0 ; i < nGrados; i++) {
+	for (int i = 0; i < nGrados; i++) {
 		if (grados[i] != id) {
 			auxGr[j] = grados[i];  //copiamos los grados que no se borran a la nueva variable
 			auxTFG[j] = numTFGs[i];  //y tambien el numero de TFGs
@@ -89,7 +88,6 @@ void Profesor::quitarGrado(int id)
 			j++;
 		}
 	}
-
 	free(grados); //liberamos las variables anteriores
 	free(numTFGs);
 	free(maxTFGs);
