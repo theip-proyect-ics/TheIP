@@ -7,7 +7,7 @@ Profesor::Profesor(string nombre, string apellido, string email) : Usuario(nombr
 	nGrados = 0;
 	numTFGs = NULL;
 	maxTFGs = NULL;
-	disponibilidad = Disponibilidad();
+	//disponibilidad = Disponibilidad();
 	doctorado = false;
 }
 
