@@ -1,0 +1,5 @@
+﻿  Main.cpp
+d:\u-tad\v0.8 base de datos\v002ip\parrilla.h(10): warning C4005: 'SLOTS': redefinición de macro
+  d:\u-tad\v0.8 base de datos\v002ip\disponibilidad.h(13): note: vea la definición anterior de 'SLOTS'
+d:\u-tad\v0.8 base de datos\v002ip\main.cpp(262): warning C4101: 'posdelete': variable local sin referencia
+  V002IP.vcxproj -> D:\U-TAD\V0.8 Base de datos\x64\Debug\V002IP.exe

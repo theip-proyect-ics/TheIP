@@ -1,0 +1,7 @@
+﻿  Main.cpp
+c:\users\alvaro\source\repos\v0.8 base de datos\v002ip\main.cpp(272): warning C4018: '<': signed/unsigned mismatch
+c:\users\alvaro\source\repos\v0.8 base de datos\v002ip\main.cpp(255): warning C4101: 'posdelete': unreferenced local variable
+c:\users\alvaro\source\repos\v0.8 base de datos\v002ip\main.cpp(493): warning C4018: '<': signed/unsigned mismatch
+c:\users\alvaro\source\repos\v0.8 base de datos\v002ip\main.cpp(550): warning C4018: '<': signed/unsigned mismatch
+c:\users\alvaro\source\repos\v0.8 base de datos\v002ip\main.cpp(615): warning C4018: '<': signed/unsigned mismatch
+  V002IP.vcxproj -> C:\Users\Alvaro\source\repos\V0.8 Base de datos\Debug\V002IP.exe
